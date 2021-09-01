@@ -5,7 +5,7 @@ const $episodesArea = $("#episodesArea");
 const $searchForm = $("#searchForm");
 
 const DEFAULT_IMAGE_URL = "https://tinyurl.com/tv-missing";
-const BASE_SEARCH_URL = "http://api.tvmaze.com/search/shows";
+const BASE_SEARCH_URL = "http://api.tvmaze.com/search/shows";//Note: cut this base url so it is actualy the base and can be reused accross multiple api requests
 
 /**
  * 
@@ -39,6 +39,8 @@ async function getShowsByTerm(queryTerm) {
   return shows;
 }
 
+/**Takes in raw show data recieved from the tv maze API. 
+ * Returns stripped down object of id, image, name, and summary. */
 function showDataExtraction(rawShowData) { 
   let {id, name, summary, image} = rawShowData.show;
 
@@ -51,7 +53,6 @@ function showDataExtraction(rawShowData) {
 
   return {id, name, summary, image};
 }
-
 
 /**
  * Check if object key value exists
@@ -67,8 +68,6 @@ function checkForNullInfo(showProperty) {//Done: try a ternery instead
 
   return(showProperty ? showProperty : "No Information");
 }
-
-
 
 /**
  * Check image exist.
