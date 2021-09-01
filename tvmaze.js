@@ -25,7 +25,7 @@ async function getSearchAPIResults(queryTerm, baseURL) {
  */
 
 
-async function getShowsByTerm(queryTerm) {//Note: See line 71 and pull out required array information here (i.e object destructuring)
+async function getShowsByTerm(queryTerm) {
   // ADD: Remove placeholder & make request to TVMaze search shows API.
 
   // access TVMaze API
@@ -33,44 +33,17 @@ async function getShowsByTerm(queryTerm) {//Note: See line 71 and pull out requi
   // should return a JSON of results for search term
 
   let results = await getSearchAPIResults(queryTerm, BASE_SEARCH_URL);//Done: this contains more than shows (e.g. results)
-  let shows = results.data;
-  // console.log("shows", shows);
-  // console.log("shows[0]", shows[0]);
-  // console.log(shows)
-  // console.log(shows[0])
+  let rawShowsData = results.data;
 
-  //loop over shows array
-  //in each loop access show and set the variables for {id, name, summary, image}
-  //return array of objects stripped down to the four items needed
-  // let showsArray = []; //note: rename
-  // for (let i = 0; i < shows.length; i++){
-  //   // let id, name, summary
-  //   // console.log(`shows[${i}]: `, shows[i].show);
-
-  //   //initial variable assignment
-  //   let {id, name, summary, image} = shows[i].show;
-  //   image = image.medium;
-
-  //   //check for null
-  //   id = checkForNullInfo(id); //Note: this shouldn't be in the populating DOM section
-  //   image = checkForNullImage(image);
-  //   name = checkForNullInfo(name);
-  //   summary = checkForNullInfo(summary);
-
-  //   //populate array to be returned accordingly
-  //   showsArray.push({id, name, summary, image});
-  // }
-  // console.log("showsArray: ", showsArray);
-
-  let showsArray = shows.map((show)=> aPIManipulation(show)); //note: change name
-  return showsArray;
+  let shows = rawShowsData.map((rawShowData)=> showDataExtraction(rawShowData)); 
+  return shows;
 }
 
-function aPIManipulation(show) { //note: maybe change name
-  let {id, name, summary, image} = show.show;
+function showDataExtraction(rawShowData) { 
+  let {id, name, summary, image} = rawShowData.show;
 
   //check for null
-  id = checkForNullInfo(id); //Note: this shouldn't be in the populating DOM section
+  id = checkForNullInfo(id); 
   image = checkForNullImage(image);
   name = checkForNullInfo(name);
   summary = checkForNullInfo(summary);
@@ -116,12 +89,6 @@ function populateShows(shows) {
   $showsList.empty();
 
   for (let show of shows) {
-
-    // let id = checkForNullInfo(show.show.id); //Note: this shouldn't be in the populating DOM section
-    // let image = checkForNullImage(show.show.image);
-    // let name = checkForNullInfo(show.show.name);
-    // let summary = checkForNullInfo(show.show.summary);
-
 
     const $show = $(
       `<div data-show-id="${show.id}" class="Show col-md-12 col-lg-6 mb-4">
