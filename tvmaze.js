@@ -10,8 +10,9 @@ const BASE_SEARCH_URL = "http://api.tvmaze.com/search/shows";
  * Access TVMaze API with query term and a base URL
  * Returns promise of search result information in a JS object
  */
-
-async function getTVMazeAPI(queryTerm, baseURL) {
+//Given query term and api URL, return results of api get request at the 
+//Note: stronger doc string
+async function getTVMazeAPI(queryTerm, baseURL) { 
   let apiResult = await axios.get(baseURL, { params: { q: queryTerm } });
   return apiResult;
 }
@@ -23,14 +24,15 @@ async function getTVMazeAPI(queryTerm, baseURL) {
  *    (if no image URL given by API, put in a default image URL)
  */
 
-async function getShowsByTerm(queryTerm) {
+
+async function getShowsByTerm(queryTerm) {//Note: See line 71 and pull out required array information here (i.e object destructuring)
   // ADD: Remove placeholder & make request to TVMaze search shows API.
 
   // access TVMaze API
   // pass in search term into API get request
   // should return a JSON of results for search term
 
-  let shows = await getTVMazeAPI(queryTerm, BASE_SEARCH_URL);
+  let shows = await getTVMazeAPI(queryTerm, BASE_SEARCH_URL);//Note: this contains more than shows (e.g. results)
   shows = shows.data;
   // console.log("shows.data", shows.data)
   // console.log("shows.data[0]", shows.data[0])
@@ -45,7 +47,7 @@ async function getShowsByTerm(queryTerm) {
  * If not, return the string "No Information"
  */
 
-function checkForNullInfo(showProperty) {
+function checkForNullInfo(showProperty) {//Note: try a ternery instead
   if (!showProperty) {
     return "No Information"
   }
@@ -58,9 +60,9 @@ function checkForNullInfo(showProperty) {
  * If not, return placeholder image.
  */
 
-function checkForNullImage(image) {
+function checkForNullImage(image) { //Note: try a ternery instead
   if (!image) {
-    return "https://tinyurl.com/tv-missing";
+    return "https://tinyurl.com/tv-missing"; //Note: make this a global constant
   }
   return image.medium
 }
@@ -71,7 +73,7 @@ function populateShows(shows) {
 
   for (let show of shows) {
 
-    let id = checkForNullInfo(show.show.id);
+    let id = checkForNullInfo(show.show.id); //Note: this shouldn't be in the populating DOM section
     let image = checkForNullImage(show.show.image);
     let name = checkForNullInfo(show.show.name);
     let summary = checkForNullInfo(show.show.summary);
