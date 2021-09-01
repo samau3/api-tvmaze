@@ -4,7 +4,7 @@ const $showsList = $("#showsList");
 const $episodesArea = $("#episodesArea");
 const $searchForm = $("#searchForm");
 
-const BASE_SEARCH_URL = "http://api.tvmaze.com/search/shows"
+const BASE_SEARCH_URL = "http://api.tvmaze.com/search/shows";
 
 /**
  * Access TVMaze API with query term and a base URL
@@ -37,30 +37,12 @@ async function getShowsByTerm(queryTerm) {
   console.log(shows)
   console.log(shows[0])
   return shows;
-
-  // return [
-  //   {
-  //     id: 1767,
-  //     name: "The Bletchley Circle",
-  //     summary:
-  //       `<p><b>The Bletchley Circle</b> follows the journey of four ordinary 
-  //          women with extraordinary skills that helped to end World War II.</p>
-  //        <p>Set in 1952, Susan, Millie, Lucy and Jean have returned to their 
-  //          normal lives, modestly setting aside the part they played in 
-  //          producing crucial intelligence, which helped the Allies to victory 
-  //          and shortened the war. When Susan discovers a hidden code behind an
-  //          unsolved murder she is met by skepticism from the police. She 
-  //          quickly realises she can only begin to crack the murders and bring
-  //          the culprit to justice with her former friends.</p>`,
-  //     image:
-  //         "http://static.tvmaze.com/uploads/images/medium_portrait/147/369403.jpg"
-  //   }
-  // ]
 }
 
 /**
  * Check if object key value exists
- * If not, replace with a string explaining absence
+ * If it does, return the value.
+ * If not, return the string "No Information"
  */
 
 function checkForNullInfo(showProperty) {
@@ -70,13 +52,19 @@ function checkForNullInfo(showProperty) {
   return showProperty
 }
 
+/**
+ * Check image exist.
+ * If yes, return the image URL.
+ * If not, return placeholder image.
+ */
+
 function checkForNullImage(image) {
   if (!image) {
-    return
+    return "https://tinyurl.com/tv-missing";
   }
   return image.medium
 }
-/** Given list of shows, create markup for each and to DOM */
+/** Given list of shows, create markup for each and add to DOM */
 
 function populateShows(shows) {
   $showsList.empty();
@@ -84,11 +72,10 @@ function populateShows(shows) {
   for (let show of shows) {
 
     let id = checkForNullInfo(show.show.id);
-    let image = checkForNullInfo(show.show.image);
+    let image = checkForNullImage(show.show.image);
     let name = checkForNullInfo(show.show.name);
     let summary = checkForNullInfo(show.show.summary);
 
-    image = checkForNullImage(image)
 
     const $show = $(
       `<div data-show-id="${id}" class="Show col-md-12 col-lg-6 mb-4">
